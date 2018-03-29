@@ -116,8 +116,9 @@ func AuthLoop(conf *Config) {
 
         buf := make([]byte, length)
 
-        r, _ := bioIn.Read(buf)
-        if r == 0 {
+        r, err := bioIn.Read(buf)
+        if r == 0 || err != nil {
+            time.Sleep(25 * time.Millisecond)
             continue
         }
 
@@ -126,7 +127,7 @@ func AuthLoop(conf *Config) {
         }
 
         if err == nil {
-            data := strings.Split(string(buf), ":")
+            data := strings.Split(string(buf[:r]), ":")
             if data[0] == "auth" {
                 success, err = auth(conf, db, data[1], data[2], data[3])
             } else if data[0] == "isuser" {
