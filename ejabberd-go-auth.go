@@ -116,8 +116,9 @@ func AuthLoop(conf *Config) {
 
         buf := make([]byte, length)
 
-        r, _ := bioIn.Read(buf)
-        if r == 0 {
+        r, err := bioIn.Read(buf)
+        if r == 0 || err != nil {
+            time.Sleep(25 * time.Millisecond)
             continue
         }
 
