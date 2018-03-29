@@ -127,7 +127,7 @@ func AuthLoop(conf *Config) {
         }
 
         if err == nil {
-            data := strings.Split(string(buf), ":")
+            data := strings.Split(string(buf[:r]), ":")
             if data[0] == "auth" {
                 success, err = auth(conf, db, data[1], data[2], data[3])
             } else if data[0] == "isuser" {
